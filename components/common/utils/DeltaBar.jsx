@@ -6,7 +6,7 @@ var DeltaBar = React.createClass({
   render: function() {
     var deltas = this.props.data;
     return (
-      <div>
+      <div style={{  borderTop: '1px solid #ccc', paddingTop: 5 }}>
         <p style={{ margin: '0 1em 0.5em', fontSize: 13 }}>
           { deltas.length === 1 ? (
             'Stars added yesterday:'

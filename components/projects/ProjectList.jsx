@@ -5,9 +5,8 @@ var flux = require('../../scripts/app');
 var Delta = require('../common/utils/Delta');
 var DeltaBar = require('../common/utils/DeltaBar');
 var Stars = require('../common/utils/Stars');
+var StarSparkline = require('./StarSparkline');
 
-//var lines = require('react-sparklines');
-//var { Sparklines, SparklinesBars, SparklinesLine } = lines;
 
 var {Link} = Router;
 
@@ -20,6 +19,24 @@ var ProjectList = React.createClass({
       showStars: true,
       showDelta: true,
       showURL: false
+    });
+  },
+
+  getInitialState: function() {
+    //var el = this.getDOMNode();
+    //var width = el.offsetWidth;
+    return {
+      width: 0
+    };
+  },
+  componentDidMount: function() {
+    setTimeout(this.setWidth);
+  },
+  setWidth: function () {
+    var el = this.getDOMNode();
+    var width = el.offsetWidth;
+    this.setState({
+      width: width
     });
   },
 
@@ -37,6 +54,7 @@ var ProjectList = React.createClass({
             maxStars={ this.props.maxStars }
             key={ project._id }
             index={ index }
+            width={ this.state.width }
           />)
         }
       </div>
@@ -84,7 +102,8 @@ ProjectList.Item = React.createClass({
         textAlign: 'center'
       }
     };
-    var {project, index} = this.props;
+    var {project, index, width} = this.props;
+
     //console.log('Display the project', project);
     return (
       <div className="card">
@@ -152,10 +171,16 @@ ProjectList.Item = React.createClass({
         </div>
 
         <div>
-          { project.deltas.length > 0 && <DeltaBar data={ project.deltas.slice(0,7) } />}
-          { false && (<Sparklines data={ project.deltas } width={ 400 }>
-            <SparklinesBars color="blue" />
-          </Sparklines>)}
+          { width > 0 && (
+            <StarSparkline
+              deltas={ project.deltas }
+              starsNow={ project.stars }
+              width={ width }
+            />
+          )}
+          { project.deltas.length > 0 &&
+            <DeltaBar data={ project.deltas.slice(0,7) } />
+          }
         </div>
 
       </div>

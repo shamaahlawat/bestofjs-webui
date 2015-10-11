@@ -7,6 +7,7 @@ module.exports = function() {
    'superagent',
    'lodash',
    'moment',
-   'numeral'
+   'numeral',
+   'react-sparklines'
  ];
 };
